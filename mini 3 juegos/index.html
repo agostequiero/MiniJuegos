@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Para Agostina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#6d3044;--muted:#8a5365;--pink:#ff5f8d;--hot:#ee3f76;
+  --coral:#ff866f;--mint:#8bd8bf;--card:rgba(255,255,255,.66);
+  --line:rgba(255,255,255,.78);--shadow:0 18px 42px rgba(179,67,102,.18)
+}
+html{scroll-behavior:smooth}
+body{
+  min-height:100vh;overflow-x:hidden;padding:22px 14px 118px;
+  font-family:"Nunito",system-ui,sans-serif;color:var(--ink);
+  background:
+    radial-gradient(circle at 12% 8%,rgba(255,255,255,.92),transparent 24%),
+    radial-gradient(circle at 87% 20%,rgba(196,155,234,.24),transparent 28%),
+    radial-gradient(circle at 18% 85%,rgba(139,216,191,.22),transparent 25%),
+    linear-gradient(155deg,#ffdbe7 0%,#fff0f4 48%,#fff7dd 100%)
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.28) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.22) 1px,transparent 1px);
+  background-size:38px 38px;mask-image:linear-gradient(to bottom,#000,transparent 78%)
+}
+button{
+  width:100%;min-height:52px;border:0;border-radius:16px;cursor:pointer;color:white;
+  font:800 1rem/1 "Nunito",sans-serif;background:linear-gradient(135deg,var(--pink),var(--coral));
+  box-shadow:0 12px 24px rgba(238,63,118,.24);transition:transform .2s ease,box-shadow .2s ease,filter .2s ease;
+  -webkit-tap-highlight-color:transparent
+}
+button:hover{transform:translateY(-2px);box-shadow:0 16px 30px rgba(238,63,118,.29)}
+button:active{transform:scale(.97);filter:saturate(1.08)}
+.shell{position:relative;z-index:1;width:min(100%,460px);margin:0 auto}
+.hero{min-height:160px;display:grid;align-content:center;gap:12px;padding:22px 8px 8px;text-align:center;animation:fade-up .8s ease both}
+.badge{
+  width:max-content;max-width:100%;margin:0 auto;padding:8px 13px;border:1px solid rgba(255,255,255,.78);
+  border-radius:999px;color:var(--hot);background:rgba(255,255,255,.58);box-shadow:0 10px 24px rgba(179,67,102,.1);
+  font-size:.86rem;font-weight:800
+}
+h1{
+  max-width:11ch;margin:0 auto;font-family:"Quicksand",system-ui,sans-serif;
+  font-size:clamp(2.15rem,11vw,3.45rem);line-height:.95;color:#f5417b;letter-spacing:0
+}
+.hero p{max-width:28ch;margin:0 auto;color:var(--muted);font-size:1rem}
+.sound-toggle{
+  display:inline-grid;grid-template-columns:auto 1fr;align-items:center;gap:8px;width:auto;min-height:40px;margin:10px auto 0;
+  padding:0 13px;border:1px solid rgba(255,255,255,.82);color:var(--hot);background:rgba(255,255,255,.62);
+  box-shadow:0 10px 20px rgba(179,67,102,.11);font-size:.9rem
+}
+.cards{display:grid;gap:16px;margin-top:18px}
+.card{
+  position:relative;overflow:hidden;padding:18px;border:1px solid var(--line);border-radius:24px;
+  background:var(--card);box-shadow:var(--shadow);backdrop-filter:blur(16px);animation:fade-up .75s ease both
+}
+.card:nth-child(2){animation-delay:.08s}.card:nth-child(3){animation-delay:.16s}
+.card:after{
+  content:"";position:absolute;inset:auto -30px -48px auto;width:118px;height:118px;border-radius:32px;rotate:18deg;
+  background:linear-gradient(135deg,rgba(255,134,111,.18),rgba(139,216,191,.18))
+}
+.card-top{position:relative;z-index:1;display:grid;grid-template-columns:54px 1fr;gap:12px;align-items:center;margin-bottom:16px}
+.icon{
+  display:grid;place-items:center;width:54px;height:54px;border-radius:18px;background:linear-gradient(135deg,#fff,#ffe3eb);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.9),0 10px 18px rgba(238,63,118,.13);font-size:1.75rem
+}
+h2{font-family:"Quicksand",system-ui,sans-serif;font-size:1.2rem;line-height:1.1;color:#743149}
+.card p{margin-top:5px;color:var(--muted);font-size:.94rem;line-height:1.35}
+.game-screen{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .32s ease,opacity .22s ease}
+.game-screen.is-open{grid-template-rows:1fr;opacity:1}
+.game-screen>div{min-height:0;overflow:hidden}
+.game-box{
+  margin-top:15px;padding:14px;border-radius:18px;background:rgba(255,255,255,.52);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.58);text-align:center
+}
+.images{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.item-card{display:grid;gap:7px;min-width:0}
+.item-card img,.makeup-pick img{
+  width:100%;aspect-ratio:1/1.18;border-radius:16px;object-fit:cover;background:#fff;
+  box-shadow:0 10px 18px rgba(179,67,102,.12);animation:drop .52s ease both
+}
+.item-card span{min-height:30px;color:var(--muted);font-size:.75rem;font-weight:800;line-height:1.05}
+.makeup-pick{display:grid;place-items:center;gap:12px}
+.makeup-pick img{width:min(72%,220px);aspect-ratio:1;border-radius:26px}
+.result-title{margin-top:14px;color:var(--hot);font-size:1.06rem;font-weight:800;line-height:1.15}
+.tiny{margin-top:6px;color:var(--muted);font-size:.84rem}
+.generate-btn{min-height:48px;margin-top:15px;border-radius:14px;font-size:.95rem}
+.diagnosis{padding:18px 12px 8px;color:var(--hot);font-family:"Quicksand",system-ui,sans-serif;font-size:1.42rem;font-weight:700}
+.treatment{margin-top:10px;padding:14px;border-radius:16px;color:#743149;background:rgba(255,255,255,.65);line-height:1.35}
+.decor{
+  position:fixed;z-index:0;display:grid;place-items:center;width:76px;height:76px;border-radius:28px;opacity:.52;
+  pointer-events:none;background:rgba(255,255,255,.45);box-shadow:0 18px 34px rgba(179,67,102,.1);
+  animation:floaty 7s infinite ease-in-out;font-size:2.15rem
+}
+.d1{top:6%;left:-20px}.d2{top:29%;right:-22px;animation-delay:1.8s}.d3{bottom:19%;left:-24px;animation-delay:3.5s}.d4{bottom:6%;right:-18px;animation-delay:5s}
+.popup{
+  position:fixed;left:50%;bottom:18px;z-index:10;max-width:min(92vw,410px);padding:12px 17px;border:1px solid rgba(255,255,255,.82);
+  border-radius:999px;color:var(--hot);background:rgba(255,255,255,.86);box-shadow:0 14px 26px rgba(179,67,102,.18);
+  backdrop-filter:blur(12px);font-size:.94rem;font-weight:800;text-align:center;transform:translateX(-50%);
+  animation:popup .95s ease both,popup-out .55s ease 4.45s forwards
+}
+.heart{position:fixed;bottom:-22px;z-index:4;pointer-events:none;animation:heart-float 4.6s linear forwards}
+.sparkle{
+  position:fixed;z-index:0;width:7px;height:7px;border-radius:999px;background:rgba(255,255,255,.9);
+  box-shadow:0 0 14px rgba(255,255,255,.9);pointer-events:none;animation:sparkle 2.8s ease-in-out infinite
+}
+@keyframes fade-up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes drop{from{opacity:0;transform:translateY(-28px) rotate(-4deg) scale(.96)}to{opacity:1;transform:translateY(0) rotate(0) scale(1)}}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-18px) rotate(5deg)}}
+@keyframes popup{from{opacity:0;transform:translate(-50%,18px)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes popup-out{to{opacity:0;transform:translate(-50%,-22px)}}
+@keyframes heart-float{0%{opacity:0;transform:translateY(0) scale(.8) rotate(0)}16%{opacity:.85}100%{opacity:0;transform:translateY(-112vh) scale(1.35) rotate(18deg)}}
+@keyframes sparkle{0%,100%{opacity:.22;transform:scale(.8)}50%{opacity:.85;transform:scale(1.7)}}
+@media(max-width:360px){body{padding-inline:10px}.card{padding:15px;border-radius:20px}.images{gap:7px}.item-card span{font-size:.69rem}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+<div class="decor d1" aria-hidden="true">&#127799;</div>
+<div class="decor d2" aria-hidden="true">&#127872;</div>
+<div class="decor d3" aria-hidden="true">&#128144;</div>
+<div class="decor d4" aria-hidden="true">&#129655;</div>
+
+<main class="shell">
+  <section class="hero" aria-labelledby="title">
+    <div class="badge">mini farmacia anti-aburrimiento</div>
+    <h1 id="title">hola linda</h1>
+    <p>aca tenes 3 jueguitos certificados para Agostina</p>
+    <button class="sound-toggle" id="soundToggle" type="button" aria-pressed="true"><span id="soundIcon">&#128264;</span><span id="soundText">sonidos bajitos activados</span></button>
+  </section>
+
+  <section class="cards" aria-label="Jueguitos">
+    <article class="card">
+      <div class="card-top"><div class="icon" aria-hidden="true">&#128087;</div><div><h2>Outfit Generator</h2><p>crear outfits peligrosamente lindos</p></div></div>
+      <button type="button" onclick="openGame('outfitGame');generateOutfit()">jugar &#128133;</button>
+      <div class="game-screen" id="outfitGame"><div><div class="game-box"><div class="images" id="outfitImages"></div><div class="result-title" id="outfitTitle"></div><button class="generate-btn" type="button" onclick="generateOutfit()">generate another &#128150;</button></div></div></div>
+    </article>
+
+    <article class="card">
+      <div class="card-top"><div class="icon" aria-hidden="true">&#128132;</div><div><h2>Makeup Randomizer</h2><p>maquillajes aprobados científicamente</p></div></div>
+      <button type="button" onclick="openGame('makeupGame');generateMakeup()">probar &#127872;</button>
+      <div class="game-screen" id="makeupGame"><div><div class="game-box"><div id="makeupResult"></div><button class="generate-btn" type="button" onclick="generateMakeup()">otro maquillaje &#10024;</button></div></div></div>
+    </article>
+
+    <article class="card">
+      <div class="card-top"><div class="icon" aria-hidden="true">&#129658;</div><div><h2>Diagnostico Medico</h2><p>analisis profesional de princesa</p></div></div>
+      <button type="button" onclick="openGame('doctorGame');generateDiagnosis()">examinar paciente &#128151;</button>
+      <div class="game-screen" id="doctorGame"><div><div class="game-box"><div id="doctorResult"></div><button class="generate-btn" type="button" onclick="generateDiagnosis()">nuevo diagnostico &#128158;</button></div></div></div>
+    </article>
+  </section>
+</main>
+
+<script>
+const makeSvg=(label,emoji,bgA,bgB)=>{
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 430"><defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="${bgA}"/><stop offset="1" stop-color="${bgB}"/></linearGradient></defs><rect width="360" height="430" rx="42" fill="url(#g)"/><circle cx="72" cy="72" r="46" fill="rgba(255,255,255,.38)"/><circle cx="310" cy="365" r="78" fill="rgba(255,255,255,.25)"/><text x="180" y="190" text-anchor="middle" font-size="102">${emoji}</text><text x="180" y="292" text-anchor="middle" font-family="Arial,sans-serif" font-size="34" font-weight="800" fill="#78314a">${label}</text></svg>`;
+  return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`
+};
+const tops=[
+  {name:"top rosita",img:makeSvg("top rosita","&#127884;","#ffe0ec","#ffc2d5")},
+  {name:"remera coquette",img:makeSvg("remera","&#128090;","#fff2c9","#ffc7d8")},
+  {name:"camisita diva",img:makeSvg("camisita","&#128085;","#dff7ff","#ffd8e5")},
+  {name:"buzo soft",img:makeSvg("buzo soft","&#129509;","#efe0ff","#ffd6eb")}
+];
+const pants=[
+  {name:"jean lindo",img:makeSvg("jean lindo","&#128086;","#d9f0ff","#b7d7ff")},
+  {name:"pollerita",img:makeSvg("pollerita","&#128087;","#ffd7e4","#e7d2ff")},
+  {name:"short chill",img:makeSvg("short chill","&#129651;","#d8fff1","#ffcfe0")}
+];
+const accessories=[
+  {name:"monito",img:makeSvg("monito","&#127872;","#ffe6f0","#ffd1dc")},
+  {name:"collar brillante",img:makeSvg("collar","&#128142;","#e9fbff","#f6d9ff")},
+  {name:"ramito",img:makeSvg("ramito","&#128144;","#fff7cf","#ffd6e7")},
+  {name:"carterita",img:makeSvg("cartera","&#128092;","#ffe7d2","#ffc7d8")}
+];
+const makeupItems=[
+  {text:"gloss nivel estrella",img:makeSvg("gloss","&#128139;","#ffe2ec","#ffc1d6")},
+  {text:"rubor aplicado con violencia",img:makeSvg("rubor","&#129655;","#ffe9d8","#ffc5d6")},
+  {text:"delineado de villana linda",img:makeSvg("delineado","&#128420;","#f4e8ff","#ffd4e4")},
+  {text:"brillito certificado",img:makeSvg("brillito","&#10024;","#fff4c8","#ffe0f0")},
+  {text:"labial destructor emocional",img:makeSvg("labial","&#128132;","#ffd8e7","#ffb4c9")}
+];
+const outfitTitles=["Pinterest girlfriend detected","demasiado linda para este planeta","modelo con sueno","outfit capaz de causar envidia","CEO de verse hermosa","nivel de diva: extremo","fit aprobado por la academia de princesas"];
+const diagnoses=["demasiado preciosa","princesa en estado critico","requiere mimos urgente","0 ganas de trabajar detectadas","demasiado bebe","exceso de ternura","certificada como hermosa","sintomas claros de necesitar merienda"];
+const treatments=["flores &#127799;","dormir una siestita &#128164;","besitos &#128139;","ropa nueva &#128087;","abrazos &#129293;","maquillaje &#128132;","sanguchitos &#129386;","ver algo tranqui y no hacer nada"];
+const floatingMessages=["toma aguita &#128167;","modo princesa activado","+1000 aura","certificada como linda","prohibido aburrirse","Agostina detected","paciente demasiado hermosa","+100 de ternura","descansa un poquito","mini princesa online"];
+let audioCtx,soundOn=true;
+const random=arr=>arr[Math.floor(Math.random()*arr.length)];
+function ensureAudio(){if(!soundOn)return null;if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();return audioCtx}
+function playTone(type="pop"){
+  const ctx=ensureAudio();if(!ctx)return;const now=ctx.currentTime,gain=ctx.createGain(),osc=ctx.createOscillator(),second=ctx.createOscillator();
+  osc.type="sine";second.type="triangle";osc.frequency.setValueAtTime(type==="doctor"?523:660,now);osc.frequency.exponentialRampToValueAtTime(type==="doctor"?392:880,now+.16);second.frequency.setValueAtTime(type==="makeup"?990:1320,now);
+  gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.035,now+.02);gain.gain.exponentialRampToValueAtTime(.0001,now+.24);
+  osc.connect(gain);second.connect(gain);gain.connect(ctx.destination);osc.start(now);second.start(now+.035);osc.stop(now+.25);second.stop(now+.19)
+}
+function openGame(id){const target=document.getElementById(id);document.querySelectorAll(".game-screen").forEach(screen=>{if(screen!==target)screen.classList.remove("is-open")});target.classList.add("is-open")}
+function generateOutfit(){
+  const picks=[random(tops),random(pants),random(accessories)];
+  document.getElementById("outfitImages").innerHTML=picks.map(item=>`<div class="item-card"><img src="${item.img}" alt="${item.name}"><span>${item.name}</span></div>`).join("");
+  document.getElementById("outfitTitle").innerText=random(outfitTitles);createHearts();playTone("outfit")
+}
+function generateMakeup(){
+  const pick=random(makeupItems);
+  document.getElementById("makeupResult").innerHTML=`<div class="makeup-pick"><img src="${pick.img}" alt="${pick.text}"><div><div class="result-title">${pick.text}</div><div class="tiny">aprobado por el instituto internacional de chicas lindas &#127872;</div></div></div>`;
+  createHearts();playTone("makeup")
+}
+function generateDiagnosis(){
+  document.getElementById("doctorResult").innerHTML=`<div class="diagnosis">${random(diagnoses)}</div><div class="treatment"><strong>tratamiento recomendado:</strong><br><br>${random(treatments)}</div>`;
+  createHearts();playTone("doctor")
+}
+function createPopup(){const popup=document.createElement("div");popup.className="popup";popup.innerHTML=random(floatingMessages);document.body.appendChild(popup);setTimeout(()=>popup.remove(),5200)}
+function popupLoop(){createPopup();setTimeout(popupLoop,Math.random()*12000+12000)}
+function createHearts(){
+  for(let i=0;i<9;i++){const heart=document.createElement("div");heart.className="heart";heart.innerHTML=random(["&#129655;","&#128151;","&#10024;","&#127872;"]);heart.style.left=`${Math.random()*96+2}vw`;heart.style.fontSize=`${Math.random()*18+15}px`;heart.style.animationDelay=`${Math.random()*.2}s`;document.body.appendChild(heart);setTimeout(()=>heart.remove(),5000)}
+}
+function createSparkles(){
+  for(let i=0;i<22;i++){const spark=document.createElement("div");spark.className="sparkle";spark.style.left=`${Math.random()*100}vw`;spark.style.top=`${Math.random()*100}vh`;spark.style.animationDelay=`${Math.random()*3}s`;document.body.appendChild(spark)}
+}
+document.getElementById("soundToggle").addEventListener("click",()=>{
+  soundOn=!soundOn;document.getElementById("soundToggle").setAttribute("aria-pressed",String(soundOn));document.getElementById("soundIcon").innerHTML=soundOn?"&#128264;":"&#128263;";document.getElementById("soundText").innerText=soundOn?"sonidos bajitos activados":"sonidos desactivados";if(soundOn)playTone("makeup")
+});
+createSparkles();setTimeout(popupLoop,850);
+</script>
+</body>
+</html>
